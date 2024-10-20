@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { build } from "vite";
 
 const contactsSlice = createSlice({
   name: "contacts",
-  initialState: { items: [] },
-  reducers: {
-    addContact: (state, action) => {
-      state.items.push(action.payload);
-    },
-    deleteContact(state, actions) {
-      state.items = state.items.filter((item) => item.id !== actions.payload);
-    },
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchContacts.pending, (state) => {
+      state.error = null;
+    });
   },
 });
 
