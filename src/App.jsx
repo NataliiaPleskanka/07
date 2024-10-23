@@ -9,12 +9,12 @@ import { selectIsLoading, selectError } from "./redux/contactsSlice";
 
 export default function App() {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const isError = useSelector(selectError);
-
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
+
+  const isLoading = useSelector(selectIsLoading);
+  const isError = useSelector(selectError);
 
   return (
     <div className={css.container}>

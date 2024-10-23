@@ -1,6 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchContacts, addContact, deleteContact } from "./contactsOps";
-import { selectFilter } from "./filtersSlice";
+import { createSelector, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import {
+  fetchContacts,
+  addContactThunk,
+  deleteContactThunk,
+} from "./contactsOps";
+import { selectNameFilter } from "./filtersSlice";
 
 const contactsSlice = createSlice({
   name: "contacts",
@@ -11,49 +15,55 @@ const contactsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchContacts.pending, (state) => {
-        state.error = null;
-      })
       .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.error = null;
-        state.loading = false;
         state.items = action.payload;
       })
-      .addCase(fetchContacts.rejected, (state) => {
-        state.error = true;
-      })
-      .addCase(addContact.pending, (state) => {
-        state.error = null;
-      })
-      .addCase(addContact.fulfilled, (state, action) => {
-        state.error = null;
-        state.loading = false;
-        state.items.push(action.payload);
-      })
-      .addCase(addContact.rejected, (state) => {
-        state.loading = false;
-        state.error = true;
-      })
-      .addCase(deleteContact.pending, (state) => {
-        state.error = null;
-      })
-      .addCase(deleteContact.fulfilled, (state, action) => {
-        state.error = null;
-        state.loading = false;
+      .addCase(deleteContactThunk.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
       })
-      .addCase(deleteContact.rejected, (state) => {
-        state.loading = false;
-        state.error = true;
+      .addCase(addContactThunk.fulfilled, (state, action) => {
+        state.items.push(action.payload);
       })
+
+      .addCase(deleteContactThunk.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(addContactThunk.rejected, (state) => {
+        state.loading = false;
+      })
+
       .addMatcher(
         isAnyOf(
           fetchContacts.pending,
-          addContact.pending,
-          deleteContact.pending
+          deleteContactThunk.pending,
+          addContactThunk.pending
         ),
         (state) => {
           state.loading = true;
+          state.error = null;
+        }
+      )
+
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.fulfilled,
+          deleteContactThunk.fulfilled,
+          addContactThunk.fulfilled
+        ),
+        (state) => {
+          state.loading = false;
+          state.error = null;
+        }
+      )
+
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.rejected,
+          deleteContactThunk.rejected,
+          addContactThunk.rejected
+        ),
+        (state) => {
+          state.error = true;
         }
       );
   },
