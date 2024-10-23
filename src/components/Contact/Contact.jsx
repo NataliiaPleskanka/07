@@ -26,7 +26,7 @@ const Contact = ({ contactData }) => {
       <button
         className={css.button}
         type="button"
-        onClick={() => dispatch(deleteContactThunk(item.id))}
+        onClick={() => dispatch(deleteContactThunk(id))}
       >
         Delete
       </button>

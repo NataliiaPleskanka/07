@@ -8,8 +8,8 @@ const SearchBox = () => {
   const dispatch = useDispatch();
   const value = useSelector(selectNameFilter);
 
-  const handleChange = (e) => {
-    dispatch(changeFilter(e.target.value));
+  const handleChange = (evt) => {
+    dispatch(changeFilter(evt.target.value));
   };
 
   return (
