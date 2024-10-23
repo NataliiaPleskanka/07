@@ -14,16 +14,14 @@ const SearchBox = () => {
 
   return (
     <div className={css.wrapper}>
-      <div>
-        <label className={css.label}>Find contacts by name</label>
-        <input
-          className={css.input}
-          type="text"
-          value={value}
-          onChange={handleChange}
-          placeholder="Search contact..."
-        />
-      </div>
+      <label className={css.label}>Find contacts by name</label>
+      <input
+        className={css.input}
+        type="text"
+        value={value}
+        onChange={handleChange}
+        placeholder="Search contact..."
+      />
     </div>
   );
 };

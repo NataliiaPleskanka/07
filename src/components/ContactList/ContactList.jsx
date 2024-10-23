@@ -10,7 +10,7 @@ const ContactList = () => {
   return (
     <ul className={css.list}>
       {filteredContacts.map(({ id, ...contact }) => (
-        <li key={id}>
+        <li key={id} className={css.item}>
           <Contact contactData={{ contact, id }} />
         </li>
       ))}
